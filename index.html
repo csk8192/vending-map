@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>지도기반자판기모니터링</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #111;
+    }
+
+    #map-container {
+        position: relative;
+        width: 100%;
+        max-width: 1432px;
+        margin: auto;
+    }
+
+    #map-image {
+        width: 100%;
+        display: block;
+    }
+
+    .machine {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid black;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+</head>
+<body>
+
+<div id="map-container">
+    <img id="map-image" src="KakaoTalk_20251117_212112974_02.jpg">
+
+    <!-- machine1 = 하성고등학교 위치 -->
+    <div id="machine1" class="machine" style="left:29.3%; top:50.8%;"></div>
+
+    <!-- 필요하면 machine2, machine3도 추가 가능 -->
+</div>
+
+<script>
+const firebaseURL = "https://the-new-adab2-default-rtdb.asia-southeast1.firebasedatabase.app/machines.json";
+
+function updateColor(step) {
+    if (step == 1) return "green";
+    if (step == 2) return "orange";
+    if (step == 3) return "red";
+    return "gray";
+}
+
+function refresh() {
+    fetch(firebaseURL)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById("machine1").style.background = updateColor(data.machine1.step);
+        });
+}
+
+setInterval(refresh, 500);
+</script>
+
+</body>
+</html>
